@@ -11,7 +11,7 @@
 
     <servlet-mapping>
         <servlet-name>servletHelper</servlet-name>
-        <url-pattern>/helper</url-pattern>
+        <url-pattern>/v1/support</url-pattern>
     </servlet-mapping>
 
 </web-app>

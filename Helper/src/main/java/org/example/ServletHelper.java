@@ -1,7 +1,5 @@
 package org.example;
 
-import sun.swing.BakedArrayList;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,23 +10,22 @@ import java.util.Random;
 
 
 public class ServletHelper extends HttpServlet {
-    ArrayList<String> list = new ArrayList<>();
+    static ArrayList<String> list = new ArrayList<>();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int ind =0;
         String str="";
-        resp.setContentType("text/html");
+        resp.setContentType("text/plain;charset=UTF-8");
 
         if(list.size()>0){
             str  = list.get(renInt());
         }
-        resp.getWriter().print("<html><body><h1>Phrase: "+ str+"</h1></body><html>");
+        resp.getWriter().print(str);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        resp.setContentType("text/plain;charset=UTF-8");
         list.add(req.getParameter("str"));
     }
     private int renInt(){
