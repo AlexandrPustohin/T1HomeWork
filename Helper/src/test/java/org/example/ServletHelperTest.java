@@ -32,6 +32,7 @@ class ServletHelperTest extends Mockito {
 
     @Test
     public void testDoGetServlet() throws ServletException, IOException {
+        ServletHelper.list.clear();
         ServletHelper.list.add(TEST_PHRASE);
         servlet.doGet(request, response);
         Mockito.verify(response).setContentType(Mockito.eq("text/plain;charset=UTF-8"));
