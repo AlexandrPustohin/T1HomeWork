@@ -31,10 +31,22 @@ public class ApplicationContext {
         for (Object configuration: configurations) {
             List<Method> methods = Arrays.stream(configuration.getClass().getMethods())
                     .filter(method -> method.isAnnotationPresent(Instance.class)).collect(Collectors.toList());
-            for (Method method: methods) {
-                instances.put(method.getReturnType(), method.invoke(configuration));
+
+            List<Method> methodsWithoutParams = methods.stream().filter(method -> method.getParameters().length == 0)
+                                                .collect(Collectors.toList());
+
+            List<Method> methodsWithParams = methods.stream().filter(method -> method.getParameters().length > 0)
+                    .collect(Collectors.toList());
+
+            for (Method methodsWithoutParam: methodsWithoutParams) {
+                instances.put(methodsWithoutParam.getReturnType(), methodsWithoutParam.invoke(configuration));
             }
 
+            for (Method methodsWithParam: methodsWithParams) {
+                Object[] objects = Arrays.stream(methodsWithParam.getParameters())
+                        .map(param->instances.get(param.getType())).toArray();
+                instances.put(methodsWithParam.getReturnType(), methodsWithParam.invoke(configuration, objects));
+            }
             
         }
         

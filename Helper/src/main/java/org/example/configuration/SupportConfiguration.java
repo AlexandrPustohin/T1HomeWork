@@ -7,8 +7,8 @@ import org.example.SupportServiceImpl;
 @Configuration
 public class SupportConfiguration {
     @Instance
-    public SupportManager supportManager(){
-        return new SupportManager(supportService());
+    public SupportManager supportManager(SupportService supportService){
+        return new SupportManager(supportService);
     }
     @Instance
     public SupportService supportService(){
