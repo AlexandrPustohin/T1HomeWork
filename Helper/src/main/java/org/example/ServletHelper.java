@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.entity.Phrase;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -10,27 +12,19 @@ import java.util.Random;
 
 
 public class ServletHelper extends HttpServlet {
-    static ArrayList<String> list = new ArrayList<>();
+    static final SupportService supportservice = SupportServiceFactory.getINSTANCE();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String str="";
-        resp.setContentType("text/plain;charset=UTF-8");
 
-        if(list.size()>0){
-            str  = list.get(renInt());
-        }
-        resp.getWriter().print(str);
+        resp.setContentType("text/plain;charset=UTF-8");
+        resp.getWriter().print(supportservice.getRandomPhrase().getPhrase());
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/plain;charset=UTF-8");
-        list.add(req.getParameter("str"));
-    }
-    private int renInt(){
-        Random rnd = new Random();
-        return rnd.nextInt(list.size());
+        supportservice.addPhrase(new Phrase(req.getParameter("str")));
     }
 
 }
