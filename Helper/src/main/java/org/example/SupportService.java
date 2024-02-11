@@ -1,5 +1,9 @@
 package org.example;
 
+import org.example.entity.Phrase;
+
 public interface SupportService {
-    String getPhrase();
+    Phrase getPhraseById();
+    Phrase getRandomPhrase();
+    void addPhrase(Phrase phrase);
 }

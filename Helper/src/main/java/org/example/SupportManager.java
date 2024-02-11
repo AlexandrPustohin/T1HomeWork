@@ -9,6 +9,6 @@ public class SupportManager {
 
 
     public String getOfficialPhrase(){
-        return String.format("Dear %s", supportService.getPhrase());
+        return String.format("Dear %s", supportService.getRandomPhrase().getPhrase());
     }
 }

@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.entity.Phrase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -19,33 +20,33 @@ class ServletHelperTest extends Mockito {
     private HttpServletRequest request;
     private HttpServletResponse response;
     private StringWriter responseWriter;
-    private final String TEST_PHRASE = "У тебя все получится!";
+
+    private SupportService supportService;
+
     @BeforeEach
     public void setUp() throws Exception{
         servlet = new ServletHelper();
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         responseWriter = new StringWriter();
+        supportService = SupportServiceFactory.getINSTANCE();
         PrintWriter writer = new PrintWriter(responseWriter);
         when(response.getWriter()).thenReturn(writer);
     }
 
     @Test
     public void testDoGetServlet() throws ServletException, IOException {
-        ServletHelper.list.clear();
-        ServletHelper.list.add(TEST_PHRASE);
+        supportService.addPhrase(new Phrase(Utils.TEST_PHRASE));
         servlet.doGet(request, response);
         Mockito.verify(response).setContentType(Mockito.eq("text/plain;charset=UTF-8"));
-        assertTrue(ServletHelper.list.contains(TEST_PHRASE));
-        assertEquals(1, ServletHelper.list.size());
-
+        assertNotNull(supportService.getRandomPhrase());
     }
 
     @Test
     public void testDoPostServlet() throws ServletException, IOException {
-        Mockito.when(request.getParameter("str")).thenReturn(TEST_PHRASE);
+        Mockito.when(request.getParameter("str")).thenReturn(Utils.TEST_PHRASE);
         servlet.doPost(request, response);
-        assertTrue(ServletHelper.list.contains(TEST_PHRASE));
+        assertTrue(supportService.getRandomPhrase().getPhrase().equals(Utils.TEST_PHRASE));
     }
 
 }
